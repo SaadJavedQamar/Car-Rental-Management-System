@@ -1,0 +1,846 @@
+#include<iostream>
+#include<fstream>    		//the useful classes for working with files in c++
+#include<bits/stdc++.h>
+#include <conio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <dos.h>
+#include <iomanip> 
+#include <windows.h>
+#include <string>
+#include <math.h>
+
+/*Note: throughout the program we use different library functions and their functionality like sleep() so we have to know about that perticular library funtions 
+	so that we can easily understand the flow of program*/
+using namespace std;
+
+void fullscreen();
+void gotoxy(int , int );
+void Boarder();
+void GotoXY(int , int );
+const string Date();
+void date();
+void welcome();
+int getIntegerOnly(int, int);
+void password();
+int carCount();
+void showCarData();
+void newCarData();
+void delCar();
+void resetAvail();
+void exitArt();
+void password();
+
+
+
+class Display{
+	public:
+		
+		void fullscreen()
+{
+	keybd_event(VK_MENU,0x38,0,0);
+	keybd_event(VK_RETURN,0x1c,0,0);
+	keybd_event(VK_RETURN,0x1c,KEYEVENTF_KEYUP,0);
+	keybd_event(VK_MENU,0x38,KEYEVENTF_KEYUP,0);
+}
+
+void gotoxy(int x, int y)
+{
+
+ COORD coord;
+
+ coord.X = x;
+
+ coord.Y = y;
+
+ SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+
+}
+
+void GotoXY(int x, int y)
+{
+    HANDLE a;
+    COORD b;
+    fflush(stdout);
+    b.X = x;
+    b.Y = y;
+    a = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleCursorPosition(a,b);
+ }
+
+void Boarder()
+{
+int i;
+   system("cls");
+   for(i=10;i<140;i++)
+   {
+       GotoXY(i,10);
+           cout<<"=";
+       GotoXY(i,58);
+           cout<<"=";
+   }
+   for(i=10;i<58;i++)
+   {
+       GotoXY(10,i);
+           cout<<"|";
+       GotoXY(140,i);
+       		cout<<"|";
+   }
+}
+
+void art()
+{
+
+	Boarder();
+	gotoxy(0, 20);
+	
+	ifstream ifs ("art.txt");    
+	string Lines = "";
+    
+    if (ifs)
+    {
+		while (ifs.good ())
+		{
+	    	string TempLine;
+	    	getline (ifs , TempLine);
+	    	TempLine += "\n";
+	    
+	    	Lines += TempLine;
+		}
+		
+	cout << Lines;
+	
+	}
+    
+    ifs.close ();
+}
+
+void welcome()
+{
+
+	Boarder();
+	gotoxy(0, 30);
+	ifstream ifs ("welcome.txt");    
+	string Lines = "";
+    
+    if (ifs)
+    {
+		while (ifs.good ())
+		{
+	    	string TempLine;
+	    	getline (ifs , TempLine);
+	    	TempLine += "\n";
+	    
+	    	Lines += TempLine;
+		}
+		
+	cout << Lines;
+
+	
+	}
+	cout<<"\n\t  |\t\t\t\t\t\t\t";
+	ifs.close ();
+	Sleep(1000);
+	
+}
+
+void exitArt()
+{
+	void Boarder();
+	gotoxy(0, 30);
+	ifstream ifs ("exit art.txt");    
+	string Lines = " ";
+    
+    if (ifs)
+    {
+		while (ifs.good ())
+		{
+	    	string TempLine;
+	    	getline (ifs , TempLine);
+	    	TempLine += "\n";
+	    
+	    	Lines += TempLine;
+		}
+		
+	cout << Lines;
+	
+	}
+    cout<<"\n\t  |\t\t\t\t\t\t\t";
+    ifs.close ();
+    Sleep(3000);
+    exit(0);
+}
+		
+};
+
+class passw{
+	public:
+	int ID;
+	char userPass[1000];
+	char rent[1000];
+	char passWord[20];
+	
+};
+
+class Employee{          //Employee Class 
+	public:
+    string name;
+	int id;
+	void Detail_Employee(){
+		sleep(2);
+		cout<<"Enter Employee Name : "<<endl;
+		getline(cin, name);
+		cout<<"Enter Employee id : "<<endl;
+		cin>>id;
+	}
+	void Display_Employee(){
+		sleep(2);
+		cout << "\t\t	| Employee Name:"<<"-----------------|"<<setw(10)<<name<<" |"<<endl;
+		cout << "\t\t	| Employee id:"<<"-------------------|"<<setw(10)<<id<<" |"<<endl;
+	}
+};
+
+class Customer{              //BASE CLASS
+	public:
+	string customer_name;
+	string car_model;                 //CUSTOMER BASE CLASS
+	string car_number;
+    char data;
+    char plate_num[10];
+	char brand[20];
+	char model[20];
+	float capacity;
+	char colour[20];
+	float rate_per_hour;
+	float rate_per_half;
+	float rate_per_day;
+	char transmission[6];
+};
+
+
+class Admin: public passw, public Customer{
+	public:
+	int i;
+
+	
+	void password(){
+	Boarder();
+	
+	
+   
+   string password;
+   char c = '\0';
+   gotoxy(40,20);
+   cout << "\n\n\n\n\t  |\t\t\tPASSWORD: ";
+
+	while(c != '\r') //Loop until 'Enter' is pressed
+         {
+         c = getch();
+         if(c == 0)
+            {
+            switch(getch())
+               {
+               default:
+                  break;            
+               };
+            }
+         else if(c == '\b')   //If the 'Backspace' key is pressed
+            {
+            if(password.size() != 0)  //If the password string contains data, erase last character
+               {
+               cout << "\b \b";
+               password.erase(password.size() - 1, 1);
+               }
+            continue;
+            }
+         else if(c <= '9' && c >= '0' || c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z')  //If user enters 1-9, a-z, or A-Z, add it to the password and display an asterisk
+            {
+            password += c;
+            cout << "*";
+            }
+         else
+            continue;
+         }
+         
+         
+         	if(password.compare(passWord)==0)
+         	{
+         		system("cls");
+		 		
+          		
+		 }
+		 
+         
+
+      		
+		  else
+          cout<<"\n\t  |\t\t\tWrong Password.. Call Administrator";
+          cout<<"\n\t  |\t\t\tReturning to Main Menu.."<<endl;
+          cout<<"\n\t  |\t\t\t";
+		  Sleep(1000);
+          cout<<"\n\t  |\t\t\tPress Enter to Continue.";
+          cout<<"\n\t  |\t\t\t";
+          getch();
+         
+         
+	
+	
+}
+
+int x;
+
+	Admin(){
+	cout<<"\n\n\n\n";
+	
+	cout << endl;
+	
+	cout<<"\n\t  |\t\t\t\t\t\t\t  1. SHOW DATA";
+	cout<<"\n\t  |\t\t\t\t\t\t\t  2. ADD CAR";
+	cout<<"\n\t  |\t\t\t\t\t\t\t  3. DELETE CAR";
+	cout<<"\n\t  |\t\t\t\t\t\t\t  4. RESET AVAILABLE CAR";
+	cout<<"\n\t  |\t\t\t\t\t\t\t  5. LOG OFF"<<endl<<"\n";
+	cout<<"\t  |\t\t\t\t\t\t\tINPUT :";
+	cin>>x;
+	
+	
+	system("cls");
+	
+	if (x==5)
+	{
+		exitArt();
+		sleep(1000);
+	}
+	
+	else if (x==1)
+	{
+		showCarData();
+	}
+	
+	else if (x==2)
+	{
+		newCarData();
+	}
+	
+	else if (x==3)
+	{
+		delCar();
+	}
+	
+	else if(x==4)
+	system("cls");
+		resetAvail();
+		
+
+}
+
+	Menu(){
+		
+	}
+
+
+int carCount(){
+	int numOfCar = 0;
+	ifstream ifs("car rental.txt"); 
+
+	string word;
+	while (getline(ifs, word))
+	{
+    	if (!word.empty())
+        	numOfCar++;
+	}
+	
+	ifs.close();
+
+	return numOfCar;
+}
+	
+	void showCarData()
+{
+	
+	
+	int x;
+	cout<<"\n\n";
+	cout << endl;
+	
+	cout << "\t  |  Plate Number\tBrand\t Model\tCapacity    Colour   Rate Per Hour   Rate Per 12 Hour   Rate Per 24 Hour   Transmission" << endl;
+	cout << "\t  |  =======================================================================================================================" << endl;
+	for (int i = 0; i < carCount(); i++)
+	{
+		cout << "\t  |  " <<plate_num << "\t\t" << brand << "\t " << model << "\t   " << capacity << "\t     "
+			 << colour << "\t  " <<rate_per_hour << "\t\t    " << rate_per_half << "\t\t    " << rate_per_day 
+			 << "\t\t       " << transmission << endl;
+	}
+	cout << "\n\n";
+	cout<<"\n\t  |\t\t\t\t\t  1. BACK";
+	cout<<"\n\t  |\t\t\t\t\t  2. MAIN MENU"<<endl<<"\n\n";
+	cout<<"\t  |\t\t\t\t\tINPUT :";
+	cin >> x;
+	
+	system("cls");
+	
+	if (x==1)
+	{
+		Admin();
+	}
+	
+	if (x==2)
+	{
+		Menu();
+	}
+	
+}
+
+void newCarData()
+{
+	cout<<"\n\n";
+	cout << endl;
+	
+	ofstream ofs;
+	ofs.open("car rental.txt" , fstream::app);
+	ofs<<endl;
+	
+	int newCar = carCount() + 1;
+	cout << "\n\n";
+	cout << "\n\t  |\t\t\t\t\t  Please enter the car data below : " << endl;
+	
+	cout << "\n\t  |\t\t\t\t\t  Plate Number : ";
+	cin >> ws;
+	cin.getline(plate_num,10);
+	ofs << plate_num;
+	ofs << " ";
+	
+	cout << "\t  |\t\t\t\t\t  Brand : ";
+	cin.getline(brand,20);
+	ofs << brand;
+	ofs << " ";
+	
+	cout << "\t  |\t\t\t\t\t  Model : ";
+	cin.getline(model,20);
+	ofs << model;
+	ofs << " ";
+	
+	cout << "\t  |\t\t\t\t\t  Capacity : ";
+	cin >> capacity;
+	ofs << capacity;
+	ofs << " ";
+	
+	cout << "\t  |\t\t\t\t\t  Colour : ";
+	cin >> ws;
+	cin.getline(colour,20);
+	ofs << colour;
+	ofs << " ";
+	
+	cout << "\t  |\t\t\t\t\t  Rate Per Hour : ";
+	cin >> rate_per_hour;
+	ofs << rate_per_hour;
+	ofs << " ";
+	
+	cout << "\t  |\t\t\t\t\t  Rate Per 12 Hour : ";
+	cin >> rate_per_half;
+	ofs << rate_per_half;
+	ofs << " ";
+	
+	cout << "\t  |\t\t\t\t\t  Rate Per 24 Hour : ";
+	cin >> rate_per_day;
+	ofs << rate_per_day;
+	ofs << " ";
+	
+	cout << "\t  |\t\t\t\t\t  Tranmission (A/M) : ";
+	cin >> ws;
+	cin.getline(transmission,6);
+	ofs << transmission;
+	
+	ofs.close();
+	system("cls");
+	
+	Admin();
+}
+
+void delCar()
+{
+	char plate[10];
+	
+	ofstream ofs;
+	ofs.open("temp.txt");
+	
+	cout<<"\n\n\n\n";
+
+	cout << endl;
+
+	
+	cout << "\n\n";
+	cout << "\t  | \t\tEnter the car plate number that are going to be deleted (CAPITAL LETTER W/OUT SPACE): "<<endl;
+	cout<< "\t  |  \t\t\t\t\t\t\t";
+	cin >> ws;
+	cin.getline(plate,10);
+	int x=carCount();
+	for(int i = 0; i < carCount(); i++)
+	{
+		if (strcmp(plate,plate_num) != 0)
+		{
+			ofs << plate_num;
+			ofs << " ";
+			ofs << brand;
+			ofs << " ";
+			ofs << model;
+			ofs << " ";
+			ofs << capacity;
+			ofs << " ";
+			ofs << colour;
+			ofs << " ";
+			ofs << rate_per_hour;
+			ofs << " ";
+			ofs << rate_per_half;
+			ofs << " ";
+			ofs << rate_per_day;
+			ofs << " ";
+			ofs << transmission;
+			if(i != carCount())
+			{
+				ofs<<endl;
+			}
+			
+			
+		}
+	}
+	
+	ofs.close();
+	
+	remove("car rental.txt");
+	rename("temp.txt","car rental.txt");
+	
+	
+	system("cls");
+	
+	Admin();
+}
+
+
+void resetAvail()
+{
+	Boarder();
+	ofstream ofs;
+	ofs.open("temp2.txt");
+	
+	for(int i = 0; i < carCount(); i++)
+	{
+			ofs << plate_num;
+			ofs << " ";
+			ofs << brand;
+			ofs << " ";
+			ofs << model;
+			ofs << " ";
+			ofs << capacity;
+			ofs << " ";
+			ofs << colour;
+			ofs << " ";
+			ofs << rate_per_hour;
+			ofs << " ";
+			ofs << rate_per_half;
+			ofs << " ";
+			ofs << rate_per_day;
+			ofs << " ";
+			ofs << transmission;
+			if(i != carCount())
+			{
+				ofs<<endl;
+			}
+			
+			
+		}
+	
+	
+	
+	
+	ofs.close();
+	remove("available.txt");
+	rename("temp2.txt","available.txt");
+	
+	Admin();
+	
+}
+
+		
+};
+
+/*DERIVED CLASS OF NAME RENT PURPOSE (GETTING DETAIL) in which three functions are created
+1)getdata()   for getting detail from user/customer
+2)calculate() for calculating rent
+3)showrent() for showing customer invoice
+*/
+
+
+class Rent : public Customer, public Employee {
+private:
+    static int days;
+    static int rental_fees;
+public:
+    void getdata() {
+        cout << endl;
+        cout << "\t\t\t\tPlease Enter Customer Name: " << endl;
+        getline(cin, customer_name);
+
+        do {
+            cout << endl;
+            cout << endl;
+            cout << "\t\t\t\t\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2";
+            cout << endl;
+            cout << "\t\t\t\tPlease Select a Car" << endl;
+            cout << "\t\t\t\tEnter 'A' for Tesla 2011." << endl;
+            cout << "\t\t\t\tEnter 'B' for Hyundai 2015." << endl;
+            cout << "\t\t\t\tEnter 'C' for Ford 2017." << endl;
+            cout << endl;
+            cout << endl;
+            cout << "\t\t\t\t\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2";
+            cout << endl;
+            cout << "\t\t\t\tChoose a Car from the above options: " << endl;
+            cout << "\t\t\t\t";
+            cin >> car_model;
+
+            // FOR A
+            if (car_model == "A") {
+                system("CLS");
+                cout << "You have chosen Tesla model 2011" << endl;
+                ifstream inA("A.txt");
+                char str[200];
+                while (inA) {
+                    inA.getline(str, 200);
+                    if (inA)
+                        cout << str << endl;
+                }
+            }
+            // FOR B
+            else if (car_model == "B") {
+                system("CLS");
+                cout << "You have chosen Hyundai model 2015" << endl;
+                ifstream inB("B.txt");
+                char str[200];
+                while (inB) {
+                    inB.getline(str, 200);
+                    if (inB)
+                        cout << str << endl;
+                }
+            }
+            // FOR C
+            else if (car_model == "C") {
+                system("CLS");
+            cout<<"You have chose Tesla model 2011"<<endl;
+		    ifstream inC("C.txt");   //displaying details of model C which is base include<fstream> library function
+            char str[200];
+            while(inC) 
+		    {
+              inC.getline(str, 200);  
+             if(inC) 
+		       cout << str << endl;	
+		    }
+           }  
+
+        // IF WRONG THEN
+        
+        if(car_model !="A" && car_model !="B" &&  car_model !="C" ){
+        	cout<<"Invaild Car Model. Please try again!"<<endl;
+			}
+   }while(car_model !="A" && car_model !="B" &&  car_model !="C");   //END OF DO WHILE LOOP
+   
+    cout<<"--------------------------------------------------------------------------"<<endl;
+    cout << "Please provide following information: "<<endl;      //GETTING DETAIl FROM USER RELATED TO RENTAL SERVICE
+	cout<<"Please select a Car No. : "<<endl;
+    cin >> car_number;
+}
+	int getIntegerOnly() { 
+    int num = 0, ch; 
+    
+    do { 
+        ch = getchar(); 
+   
+        // Checks the ASCII code of digits 0 to 9 
+        if (ch >= 48 && ch <= 57) { 
+            cin >> ch; 
+   
+            // To make a digit 
+            num = num * 10 + (ch - 48); 
+        } 
+   
+        // 13 is carriage return it breaks 
+        // and return the input 
+        if (ch == 13) 
+            break; 
+    } while (1); 
+   
+    return (num); 
+  
+        
+    
+    
+    cout<<"Number of days you wish to rent the car : "<<endl;
+    cin >> days;
+}
+
+    // FUNCTION FOR CALCULATING RENT OF CAR
+    
+    void calculate()
+	{
+		sleep(1);
+		system ("CLS");
+		cout<<"Calculating rent. Please wait......"<<endl;
+		sleep(2);
+		if(car_model == "A"||car_model=="a")
+        rental_fees=days*56;
+        if(car_model == "B" ||car_model=="b")
+        rental_fees=days*60;
+        if(car_model == "C" ||car_model=="c")
+        rental_fees=days*75;
+    }
+
+    // CUSTOMER INVOICE FUNCTION
+    
+    void showrent()
+    {
+    cout << "\n\t\t                       Car Rental - Customer Invoice                  "<<endl;
+    cout << "\t\t	///////////////////////////////////////////////////////////"<<endl;
+    cout << "\t\t	| Invoice No. :"<<"------------------|"<<setw(10)<<"#Cnb81353"<<" |"<<endl;
+    cout << "\t\t	| Customer Name:"<<"-----------------|"<<setw(10)<<customer_name<<" |"<<endl;
+    cout << "\t\t	| Car Model :"<<"--------------------|"<<setw(10)<<car_model<<" |"<<endl;
+    cout << "\t\t	| Car No. :"<<"----------------------|"<<setw(10)<<car_number<<" |"<<endl;
+    cout << "\t\t	| Number of days :"<<"---------------|"<<setw(10)<<days<<" |"<<endl;
+    cout << "\t\t	| Your Rental Amount is :"<<"--------|"<<setw(10)<<rental_fees<<"  |"<<endl;
+    cout << "\t\t	| Caution Money :"<<"----------------|"<<setw(10)<<"0"<<" |"<<endl;
+    cout << "\t\t	| Advanced :"<<"---------------------|"<<setw(10)<<"0"<<" |"<<endl;
+   	cout << "\t\t	 ________"<<endl;
+    cout <<"\n";
+    cout << "\t\t	| Total Rental Amount is :"<<"-------|"<<setw(10)<<rental_fees<<" |"<<endl;
+    cout << "\t\t	 ________"<<endl;
+    cout << "\t\t	 # This is a computer generated invoce and it does not"<<endl;
+    cout << "\t\t	 require an authorised signture #"<<endl;
+    cout <<" "<<endl;
+    cout << "\t\t	///////////////////////////////////////////////////////////"<<endl;
+    cout << "\t\t	You are advised to pay up the amount before due date."<<endl;
+    cout << "\t\t	Otherwise penelty fee will be applied"<<endl;
+    cout << "\t\t	///////////////////////////////////////////////////////////"<<endl;
+    int f;
+    system("PAUSE");
+    system ("CLS");
+    ifstream inf("thanks.txt");
+    char str[300];                  
+    while(inf) {
+    inf.getline(str, 300);
+    if(inf) 
+	cout << str << endl;
+    }
+    inf.close();
+  }   //ENDING OF FUNCTION FOR CUSTOMER INVOICE     
+};
+
+int Rent::days=1;
+int Rent::rental_fees=1;
+
+
+class Menu: public Display, public Customer{
+	
+	public:
+	
+	Menu(){
+	int x;
+	
+	
+	cout << endl;
+	cout<<"\n\t  |\t\t\t\t\t\t\t  1. ADMIN";
+	cout<<"\n\t  |\t\t\t\t\t\t\t  2. CUSTOMER";
+	cout<<"\n\t  |\t\t\t\t\t\t\t  3. EXIT"<<endl<<"\n";
+	cout<<"\n\t  |\t\t\t\t\t\t\tINPUT :";
+	cin>>x;
+	
+	
+	system("cls");
+	
+	if (x==2)
+	{
+		Customer();
+	}
+	
+	else if (x==1)
+	{
+		password();
+	}
+	
+	else if (x==3)
+	{
+		cout << "\n\n\n\n";
+		exitArt();
+		Sleep(1000);
+		exit(0);
+	}
+		
+	else if (x==6)
+	{
+		fullscreen();
+		system("cls");
+	}	
+}
+};           
+		   
+		   
+		   //MAIN FUNCTION
+
+int main(){
+	
+//		int car_number = getIntegerOnly();
+		
+	Display o;
+   
+	o.fullscreen();
+	o.Boarder();
+	o.art();
+	o.welcome();
+	
+   string pass ="";
+   char ch;
+   
+   
+   cout<<"\n\n\n\n\n\n\n\t\t\t\t\t\tEnter Password: ";
+   ch = _getch();
+   while(ch != 13){//character 13 is enter
+      pass.push_back(ch);
+      
+      ch = _getch();
+}
+   if(pass == "pass"){
+      cout<<"\n\n\n\n\t\t\t\t\t  Access Granted! Welcome To Our System \n\n";
+  
+      system("PAUSE");
+      system("CLS");
+    cout<<endl;
+	cout<<"                    \n\t\t\t\t\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2";
+	cout<<endl;
+	             
+	cout<<"\n\t\t\t\tALI ASGHAR \n";
+	cout<<"\n\t\t\t\t----------------------------------------------\n";
+	cout<<"\t\t\t\t\t    RENTAL CAR SYSTEM\n";
+	cout<<"\t\t\t\tWelcome to our company ,Choose from the Menu:\n";
+	cout<<"\t\t\t\t----------------------------------------------\n";
+	cout<<endl;
+	cout<<"                    \n\t\t\t\t\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2\xB2";
+	cout<<endl;
+	cout<<"\t\t";
+	
+	Menu a;
+	
+	Admin b;
+	
+	
+	Rent obj2;                  //object created for rent class and further member functions are called
+    obj2.getdata();
+    obj2.calculate();
+    obj2.showrent();
+
+   }else{
+      cout <<"\n\n\n\n\t\t\t\t\tAccess Aborted...Please Try Again!!\n";
+      system("PAUSE");
+      system("CLS");
+      
+   }
+
+   o.exitArt(); 
+   
+}
+
